@@ -64,65 +64,17 @@
                 </el-row>
             </div>
         </div>
+
+        <div class="tmgeFooter">
+        </div>
     </div>
 </template>
 
 <script>
+// import questionsJson from 'json/choice_questions.json'
+// console.log(questionsJson);
 export default {
     name: 'app',
-    methods: {
-        nextPage: function() {
-            this.page++;
-            this.active++;
-        },
-        resetPage: function() {
-            this.page = 1;
-            this.active = 0;
-        },
-        isTrue: function() {
-            if (this.radio1 === this.currentQuestion.answer+1) {
-                this.score += 10;
-                this.$notify({
-                    title: '正解',
-                    message: 'おめでとうございます！',
-                    type: 'success',
-                    duration: 1500,
-                });
-            } else {
-                this.score += 0;
-                this.$notify({
-                title: '不正解',
-                message: '残念...',
-                type: 'warning',
-                duration: 1500,
-                });
-            }
-            this.radio1 = 1;
-        },
-        nextQuestion: function() {
-            if (this.currentQuestionIndex < this.questions.length-1-9) {
-                this.currentQuestionIndex += 1;
-            } else {
-                this.nextPage();
-                this.centerDialogVisible = true;
-            }
-        },
-        resultMessage: function() {
-            const totalScore = this.questions.length*10;
-            if (this.score === totalScore) {
-                return 'ミッシェルガンエレファントマスター';
-            } else if (this.score < totalScore/2) {
-                return 'ミッシェルガンエレファントに興味がない人';
-            } else {
-                return 'ミッシェルガンエレファントにわか';
-            }
-        },
-    },
-    computed: {
-        currentQuestion: function() {
-            return this.questions[this.currentQuestionIndex];
-        },
-    },
     data () {
         return {
             page: 1,
@@ -132,6 +84,7 @@ export default {
             score: 0,
             currentQuestionIndex: 0,
             centerDialogVisible: false,
+            // questionJson : questionsJson,
             questions: [
                 {
                     question: '以下人物の中で、ミッシェルガンエレファントへの加入が遅い人物は？',
@@ -233,28 +186,64 @@ export default {
                     ],
                     answer: 2
                 },
-                // {
-                //     question: '15thシングル「Girl Friend」の収録曲として正しいものは？',
-                //     selections: [
-                //             'NIGHT IS OVER',
-                //             '夜が終わる',
-                //             'ヴァレンタイン',
-                //             '解答なし',
-                //     ],
-                //     answer: 3
-                // },
-                // {
-                //     question: 'チバユウスケが所有する機材の中で、Ekoというイタリアのメーカーのギターがあるが、彼はこれをどこで手に入れた？',
-                //     selections: [
-                //             '新大久保',
-                //             '下北沢',
-                //             '吉祥寺',
-                //             '御茶ノ水',
-                //     ],
-                //     answer: 0
-                // },
             ],
         }
+    },
+    methods: {
+        nextPage: function() {
+            this.page++;
+            this.active++;
+        },
+        resetPage: function() {
+            this.page = 1;
+            this.active = 0;
+            this.counter = 1;
+            this.score = 0;
+        },
+        isTrue: function() {
+            if (this.radio1 === this.currentQuestion.answer+1) {
+                this.score += 10;
+                this.$notify({
+                    title: '正解',
+                    message: 'おめでとうございます！',
+                    type: 'success',
+                    duration: 1500,
+                });
+            } else {
+                this.score += 0;
+                this.$notify({
+                title: '不正解',
+                message: '残念...',
+                type: 'warning',
+                duration: 1500,
+                });
+            }
+            this.radio1 = 1;
+        },
+        nextQuestion: function() {
+            if (this.currentQuestionIndex < this.questions.length-1) {
+                this.currentQuestionIndex += 1;
+            } else {
+                this.nextPage();
+                this.centerDialogVisible = true;
+            }
+        },
+        resultMessage: function() {
+            const totalScore = this.questions.length*10;
+
+            if (this.score === totalScore) {
+                return 'ミッシェルガンエレファントマスター';
+            } else if (this.score < totalScore/2) {
+                return 'ミッシェルガンエレファントに興味がない人';
+            } else {
+                return 'ミッシェルガンエレファントにわか';
+            }
+        },
+    },
+    computed: {
+        currentQuestion: function() {
+            return this.questions[this.currentQuestionIndex];
+        },
     },
 }
 </script>
