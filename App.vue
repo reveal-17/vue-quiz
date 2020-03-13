@@ -9,7 +9,7 @@
         </div>
 
         <div class="tmgeStart" v-if="page == 1">
-            <p>ミッシェルガンエレファントにまつわるクイズ！<br>Twitteでログインすると結果をみんなにシェアすることができます！</p>
+            <p>ミッシェルガンエレファントにまつわるクイズ！<br>Twitterでログインすると結果をみんなにシェアすることができます！</p>
             <el-row>
                 <el-button type="success" plain @click="nextPage">クイズに挑戦してみる</el-button>
             </el-row>
@@ -23,6 +23,12 @@
 
             <div class="tmgeMain__question">
                 {{ currentQuestion.question }}
+                <div class="tmgeMain__question--success">
+
+                </div>
+                <div class="tmgeMain__question--alert">
+
+                </div>
             </div>
 
             <el-radio-group v-model="radio1" class="tmgeMain__form">
@@ -38,8 +44,6 @@
         </div>
 
         <div class="tmgeOutput" v-if="page == 3">
-            <!-- <el-button type="text" @click="centerDialogVisible = true">結果発表</el-button> -->
-
             <el-dialog
             title="結果発表！"
             :visible.sync="centerDialogVisible"
@@ -53,9 +57,9 @@
             </el-dialog>
 
             <div class="tmgeOutput__message">
-                <p>あなたは<span class="tmgeOutput__reception">ミッシェルガンエレファントマスター</span>です！<br>クイズの結果をTwitterで共有してみましょう！</p>
+                <p>あなたは<span class="tmgeOutput__reception">{{ resultMessage() }}</span>です！<br>クイズの結果をTwitterで共有してみましょう！</p>
                 <el-row>
-                    <el-button type="success" plain>もう一度挑戦してみる！</el-button>
+                    <el-button type="success" plain @click="resetPage()">もう一度挑戦してみる！</el-button>
                     <el-button type="primary" plain>Twitterで結果を共有する！</el-button>
                 </el-row>
             </div>
@@ -71,27 +75,53 @@ export default {
             this.page++;
             this.active++;
         },
+        resetPage: function() {
+            this.page = 1;
+            this.active = 0;
+        },
         isTrue: function() {
             if (this.radio1 === this.currentQuestion.answer+1) {
                 this.score += 10;
+                this.$notify({
+                    title: '正解',
+                    message: 'おめでとうございます！',
+                    type: 'success',
+                    duration: 1500,
+                });
             } else {
                 this.score += 0;
+                this.$notify({
+                title: '不正解',
+                message: '残念...',
+                type: 'warning',
+                duration: 1500,
+                });
             }
             this.radio1 = 1;
         },
         nextQuestion: function() {
-            if (this.currentQuestionIndex < this.questions.length) {
+            if (this.currentQuestionIndex < this.questions.length-1-9) {
                 this.currentQuestionIndex += 1;
             } else {
                 this.nextPage();
                 this.centerDialogVisible = true;
             }
         },
+        resultMessage: function() {
+            const totalScore = this.questions.length*10;
+            if (this.score === totalScore) {
+                return 'ミッシェルガンエレファントマスター';
+            } else if (this.score < totalScore/2) {
+                return 'ミッシェルガンエレファントに興味がない人';
+            } else {
+                return 'ミッシェルガンエレファントにわか';
+            }
+        },
     },
     computed: {
         currentQuestion: function() {
             return this.questions[this.currentQuestionIndex];
-        }
+        },
     },
     data () {
         return {
