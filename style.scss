@@ -1,0 +1,50 @@
+body {
+    color: #303133;
+    background-image: url(assets/papyrus.png);
+}
+
+.tmgeStart {
+    width: 60%;
+    margin: 50px auto 0;
+    padding: 50px;
+    border: 1px solid #DCDFE6;
+    background-color: #FFFFFF;
+}
+
+.tmgeMain {
+    width: 60%;
+    margin: 25px auto 0;
+    padding: 50px;
+    border: 1px solid #DCDFE6;
+    background-color: #FFFFFF;
+
+    &__question {
+        padding: 50px;
+        margin-top: 50px;
+        border: 1px solid #DCDFE6;
+        border-radius: 5px;
+    }
+
+    &__form {
+        margin: 50px;
+    }
+}
+
+.tmgeOutput {
+
+    &__score {
+        color: #409EFF;
+    }
+
+    &__message {
+        width: 60%;
+        margin: 50px auto 0;
+        padding: 50px;
+        border: 1px solid #DCDFE6;
+        background-color: #FFFFFF;
+    }
+
+    &__reception {
+        color: #409EFF;
+    }
+}
